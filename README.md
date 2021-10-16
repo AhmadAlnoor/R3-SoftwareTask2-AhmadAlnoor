@@ -10,5 +10,26 @@ In order to accept user input, "pygame" library was imported into the file so th
 Also, for network connection, "socket" was also imported.
 
 Before we get into the code, the pygame library and the network connection must be initalized:
-In order to use pygames library, "pygame.init()" must be called to initalize all the libraries.
-Next, in order to set up a network between input.py and server.py, socket library's socket.socket function was called to initialize the iPv4 and TCP connections
+In order to use pygames library, "pygame.init()" must be called to initalize pygame for execution.
+Next, in order to set up a network between input.py and server.py, socket library's socket.socket function is called to initialize the iPv4 and TCP connections. Furthermore, the client (input.py) must connect to the server (server.py). To establish the connect, connect function was used to establish connection using the host connection name and a port number. For this project. "socket.gethostname()" function was called to connect to the host computers network and port number 5000 was chosen at random since the lower ports are already in use by other programs on the computer. 
+
+To use pygame, a small display screen of 800x600 was also initialized. The screen is an interface that must be clicked in order for the program to accept input. It is a black screen that displays nothing. The commands that the code executes get displayed in the terminal instead.
+
+A speed variable is also initialzed to zero so that the robot is initally at rest and the speed must be manually changed.
+
+Now to the code:
+In the  "if __name__ == '__main__':", the first two lines are a welcome message and an introduction message to let the user know what the program is about.
+After the message, input.py goes into an infinite loop which starts to handle events. Events are triggered every time a key is pressed. In this infinite while loop, the program executes the events for all the 9 possible inputs the user can enter. 
+    
+    "for event in pygame.event.get():" is a for loop that calls pygame.event.get() to see if any event has been triggered (if any button is pressed).
+    The first if-condition in the for-loop looks for if the display screen has been close. If it has, the loop condition becomes false and input.py exits
+    The second if-condition in the for-loop checks if a button-pressed type of event has been triggered. (pygame.KEYDOWN). If a button is pressed, then it checks for which 1 of the 9 buttons has been pressed. 
+    if 0 has been pressed, then set the "speed" variable to 0
+    if 1 has been pressed, then set the "speed" variable to 1
+    if 2 has been pressed, then set the "speed" variable to 2
+    if 3 has been pressed, then set the "speed" variable to 3
+    if 4 has been pressed, then set the "speed" variable to 4
+    if 5 has been pressed, then set the "speed" variable to 5
+  For the W,A,S,and D keys, the if-condition is different. When they are pressed, instead of setting a variable, we send the speed and the respective direction to the server.py. The reason why we must send it when W,A,S, and D are pressed is because we have all the information to direct the rover. If W,A,S,and D are pressed before setting the rover speed, the speed by default is set to zero hence, we still have enough information to direct the rover. Except, when speed = 0, no matter which direction is pressed, the robot doesn't move. Therefore,
+  if A has been pressed, send the speed information first over the network (in a string format) followed by the character "A"
+Similarly, for S,W,and D, the speed variable is also sent first followed by character "S", "W", and "D" when their respective keys are pressed.
